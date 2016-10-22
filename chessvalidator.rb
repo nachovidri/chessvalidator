@@ -1,41 +1,43 @@
-$board = 
-[
-	[:wQ, "--", "--", "--", "--", "--", "--", "--"],
-	["--", "--", "--", "--", "--", "--", "--", "--"],
-	["--", "--", "--", "--", "--", "--", "--", "--"],
-	["--", "--", "--", "--", "--", "--", "--", "--"],
-	["--", "--", "--", "--", "--", "--", "--", "--"],
-	["--", "--", "--", "--", "--", "--", "--", "--"],
-	["--", "--", "--", "--", "--", "--", "--", "--"],
-	["--", "--", "--", "--", "--", "--", "--", "--"],
-]
+require "pry"
+# board = 
+# [
+# 	[:wQ, "--", "--", "--", "--", "--", "--", "--"],
+# 	["--", "--", "--", "--", "--", "--", "--", "--"],
+# 	["--", "--", "--", "--", "--", "--", "--", "--"],
+# 	["--", "--", "--", "--", "--", "--", "--", "--"],
+# 	["--", "--", "--", "--", "--", "--", "--", "--"],
+# 	["--", "--", "--", "--", "--", "--", "--", "--"],
+# 	["--", "--", "--", "--", "--", "--", "--", "--"],
+# 	["--", "--", "--", "--", "--", "--", "--", "--"],
+# ]
 
 class ChessValidator
 
-	def self.make_move
+	def self.make_move board
 		@ini_pos = [0,0]
-		@fin_pos = [3,3]
-		chess_piece_sym = get_piece @ini_pos
-		check_move chess_piece_sym
+		@fin_pos = [3,0]
+		chess_piece_sym = get_piece @ini_pos, board
+		check_move chess_piece_sym.to_sym
 
 		# chess_piece = create_piece chess_piece_sym
 		# chess_piece.validate_move ini_pos, fin_pos
 	end
 
-	def self.get_piece ini_pos
-		piece = $board[ini_pos[0]][ini_pos[1]]
+	def self.get_piece ini_pos, board
+		piece = board[ini_pos[0]][ini_pos[1]]
 	end
 
 	def self.check_move piece
-		if piece == :wR
+		# binding.pry
+		if piece == :bR
 			Rook.validate_move @ini_pos, @fin_pos
-		elsif piece == :wN
+		elsif piece == :bN
 
-		elsif piece == :wB
+		elsif piece == :bB
 			Bishop.validate_move @ini_pos, @fin_pos
-		elsif piece == :wQ
+		elsif piece == :bQ
 			Queen.validate_move @ini_pos, @fin_pos
-		elsif piece == :wK
+		elsif piece == :bK
 		
 		end
 	end	
@@ -79,5 +81,45 @@ class Queen < ChessPiece
 	end
 end
 
-# ChessValidator.new
-ChessValidator.make_move
+class FileManager
+
+	def self.read_file file_name
+		IO.readlines file_name
+	end
+
+	def self.write
+
+	end
+end
+
+class ChessBoard
+	attr_accessor :board
+
+	def initialize
+		@board = process_array
+	end
+
+	def process_array
+		board_rows = FileManager.read_file "simple_board.txt"
+		board_rows.map do |row|
+			row = row.split(' ')
+		end
+	end	
+
+end
+
+
+chessboard = ChessBoard.new
+
+# board = board.map do |row|
+# 	row.split(' ')
+# end
+
+# print board.board
+
+ChessValidator.make_move chessboard.board
+
+
+
+
+
